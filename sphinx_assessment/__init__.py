@@ -5,7 +5,7 @@ from sphinx.util.fileutil import copy_asset
 
 from .mchoice import setup as mchoice_setup
 from .dragndrop import setup as dragndrop_setup
-from .fitb import setup as fitb_setup
+from .fillintheblank import setup as fillintheblank_setup
 from .parsons import setup as parsons_setup
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ def setup(app):
 
     mchoice_setup(app)
     dragndrop_setup(app)
-    fitb_setup(app)
+    fillintheblank_setup(app)
     parsons_setup(app)
 
     app.add_css_file("assessment.css")
