@@ -4,3 +4,4 @@ sphinx_assessment/.ipynb_checkpoints/
 sphinx_assessment/__pycache__
 sphinx_assessment/node_modules/
 sphinx_assessment/package-lock.json
+sphinx_assessment.egg-info/
