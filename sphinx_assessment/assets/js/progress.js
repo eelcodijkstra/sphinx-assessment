@@ -11,11 +11,21 @@ const progress_log = function (obj) {
     progress_db.put(obj);
 }
 
+function progress_login() {
+    alert("login...");
+}
+
 function progress_init() {
     const booktitle = document.getElementById('site-title').innerHTML;
     const pagetitle = document.querySelector('h1 > a.headerlink').parentElement.firstChild.textContent;
     progress_context.booktitle = booktitle;
-    progress_context.pagetitle = pagetitle;                                             
+    progress_context.pagetitle = pagetitle;
+    
+    const topbar = document.querySelector("div.topbar-main");
+    var elmt = document.createElement('a');
+    elmt.classList.add("full-screen-button");
+    elmt.innerHTML = '<button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="bottom" onclick="progress_login()" aria-label="Login" title="" data-original-title="Login">\n    <i class="fas fa-user"></i>\n</button>';
+    topbar.appendChild(elmt);  // komt links, moet eigenlijk rechts   
 }
 
 document.addEventListener('DOMContentLoaded', function(event) {
