@@ -1,3 +1,5 @@
+var assessment_log = function (obj) {};
+
 (function() {
   /*
   ** mchoice
@@ -27,6 +29,11 @@
         feedbacks[i].hidden = true;
       }
     }
+    const opgave = myform.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'mchoice',
+                    'opgave': opgave,
+                    'answer': myform.answer.value, 
+                    'correct': correct});  
     return false; // no further action
   }
 
@@ -317,11 +324,15 @@
 
   /*
   ** initialization
-  */
+  */    
+    
   document.addEventListener('DOMContentLoaded', function(event) {
     findFillintheblanks();
     findMchoices();
     findDragndrops();
     findParsons();
+    if (typeof progress_log !== 'undefined') { // check if exists
+        assessment_log = progress_log;
+    }    
   });
 })();
