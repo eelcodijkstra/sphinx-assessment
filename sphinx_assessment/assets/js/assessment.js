@@ -73,6 +73,8 @@ var assessment_log = function (obj) {};
 
   function fitbcheck(evt, item) {
     console.log('check fitb');
+    var answerlog = [];
+    var correct = true;
     const answers = item.getElementsByClassName('fitbanswer');
     for (const answer of answers) {
       const type = answer.dataset.type;
@@ -98,8 +100,16 @@ var assessment_log = function (obj) {};
         answer.style.backgroundColor = 'yellowGreen';
       } else {
         answer.style.backgroundColor = 'salmon';
+        correct = false;  
       }
+      answerlog.push({'answer': answer.value, 'correct': ok});  
     }
+    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'fillintheblank',
+                    'opgave': opgave,
+                    'answers': answerlog,
+                    'correct': correct
+    });      
   }
 
   function findFillintheblanks() {

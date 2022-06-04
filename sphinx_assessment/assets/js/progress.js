@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       console.log('We have a database: ' + JSON.stringify(info));
   });                         
   console.log("pouchDB connected?");  
-  if (typeof assessment_log !== 'undefined') { // check if exists
+  if (typeof assessment_log !== 'undefined') { // check if variable exists
         assessment_log = progress_log;
   }    
 });
