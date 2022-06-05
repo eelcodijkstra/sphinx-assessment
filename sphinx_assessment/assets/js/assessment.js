@@ -305,12 +305,13 @@ var assessment_log = function (obj) {};
     const target = targets[0];
     for (const item of target.children) {
       console.log('next item');
-      answerlog.push({
-          'item': item.dataset.value,
-          'order': item.style.gridRowStart,
-          'indent': item.style.gridColumnStart
-      });
+
       if (item.classList.contains('parsons-item')) {
+        answerlog.push({
+            'item': item.dataset.value,
+            'order': item.style.gridRowStart,
+            'indent': item.style.gridColumnStart
+        });          
         if ((item.style.gridRowStart == item.dataset.value) &&
           (item.style.gridColumnStart - 1 == item.dataset.indent)) {
           item.style.backgroundColor = 'yellowgreen';
