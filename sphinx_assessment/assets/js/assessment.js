@@ -324,7 +324,7 @@ var assessment_log = function (obj) {};
     // check all elements in this target:
     // if parsons-item: check 'value' == item.style.gridRowStart and
     // 'indent' == item.style.gridColumnStart - 1
-    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    const opgave = evt.target.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'parsons',
                     'opgave': opgave,
                     'answerlog': answerlog,
