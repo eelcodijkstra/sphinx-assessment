@@ -150,6 +150,7 @@ var assessment_log = function (obj) {};
   function checkDnd(ev) {
     const dnd = ev.target.parentNode;
     const items = dnd.querySelectorAll('.dndsourceitem');
+    var correct = true;
     for (const item of items) {
       if (
         (item.parentNode.dataset != null) &&
@@ -158,8 +159,14 @@ var assessment_log = function (obj) {};
         item.style.backgroundColor = 'yellowGreen';
       } else {
         item.style.backgroundColor = 'salmon';
+        correct = false;
       }
     }
+    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'dragndrop',
+                    'opgave': opgave,
+                    'correct': correct
+    });       
   }
 
   function resetDnd(ev) {
@@ -289,6 +296,8 @@ var assessment_log = function (obj) {};
 
   function parsonsCheckHandler(evt) {
     console.log('Parsons: check');
+    var correct = true;
+    var answerlog = [];
     // find surrounding parsons admonition
     const parsons = evt.target.closest('.parsons');
     const targets = parsons.getElementsByClassName('parsons-target');
@@ -296,12 +305,18 @@ var assessment_log = function (obj) {};
     const target = targets[0];
     for (const item of target.children) {
       console.log('next item');
+      answerlog.push({
+          'item': item.dataset.value,
+          'order': item.style.gridRowStart,
+          'indent': item.style.gridColumnStart
+      });
       if (item.classList.contains('parsons-item')) {
         if ((item.style.gridRowStart == item.dataset.value) &&
           (item.style.gridColumnStart - 1 == item.dataset.indent)) {
           item.style.backgroundColor = 'yellowgreen';
         } else {
           item.style.backgroundColor = 'salmon';
+          correct = false;
         }
       }
     }
@@ -309,6 +324,12 @@ var assessment_log = function (obj) {};
     // check all elements in this target:
     // if parsons-item: check 'value' == item.style.gridRowStart and
     // 'indent' == item.style.gridColumnStart - 1
+    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'parsons',
+                    'opgave': opgave,
+                    'answerlog': answerlog,
+                    'correct': correct
+    });        
   }
 
   function findParsons() {
