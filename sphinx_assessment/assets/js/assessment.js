@@ -32,8 +32,12 @@ var assessment_log = function (obj) {};
     const opgave = myform.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'mchoice',
                     'opgave': opgave,
-                    'answer': myform.answer.value, 
-                    'correct': correct});  
+                    'answerlog': {
+                        'answer': myform.answer.value,
+                        'correctanswer': correct
+                    },
+                    'correct': correct == myform.answer.value
+    });  
     return false; // no further action
   }
 
@@ -107,7 +111,7 @@ var assessment_log = function (obj) {};
     const opgave = item.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'fillintheblank',
                     'opgave': opgave,
-                    'answers': answerlog,
+                    'answerlog': answerlog,
                     'correct': correct
     });      
   }
