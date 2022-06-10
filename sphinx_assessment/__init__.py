@@ -53,7 +53,7 @@ def setup(app):
     app.add_js_file("assessment.js")
 
     return {
-        "version": "0.2",
+        "version": "0.1.1",
         "parallel_read_safe": True,
         "parallel_write_safe": True,
     }
