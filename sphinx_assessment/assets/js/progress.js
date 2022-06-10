@@ -5,8 +5,8 @@ var progress_user = {username: "noname", password: ""};
 
 const progress_log = function (obj) {
     console.log('progress-log' + JSON.stringify(obj));
-    const now = new Date();
-    obj["_id"] = now.toString();
+    const now = new Date().toISOString();
+    obj["_id"] = now;
     obj.time = now.toString();
     obj.book = progress_context.booktitle;
     obj.page = progress_context.pagetitle;
