@@ -1,4 +1,9 @@
-var assessment_log = function (obj) {};
+var assessment_log = function (obj) {
+    if (typeof progress_log !== 'undefined') { // check if exists
+        progress_log(obj);
+        assessment_log = progress_log; // to avoid repeated check
+    }      
+};
 
 (function() {
   /*
@@ -367,8 +372,5 @@ var assessment_log = function (obj) {};
     findMchoices();
     findDragndrops();
     findParsons();
-    if (typeof progress_log !== 'undefined') { // check if exists
-        assessment_log = progress_log;
-    }    
   });
 })();
