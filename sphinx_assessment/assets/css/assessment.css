@@ -220,3 +220,27 @@ div.parsons button.parsons-checkbutton {
   border-color: rgba(var(--pst-color-admonition-hint),0.3);  
   border-radius: 8px;
 }
+
+/*********************************************
+* Shortanswer *
+*********************************************/
+
+div.shortanswer {
+  border-color: rgba(var(--pst-color-admonition-hint),1);
+  background-color: rgba(var(--pst-color-admonition-hint),0.05);
+}
+
+div.shortanswer p.admonition-title::before {
+  content: "\f044";
+  color: rgba(var(--pst-color-admonition-hint),1);    
+}
+
+div.shortanswer p.admonition-title {
+  background-color: rgba(var(--pst-color-admonition-hint),0.1);
+}
+
+div.shortanswer button.sacheckbutton {
+  background-color: rgba(var(--pst-color-admonition-hint),0.1);
+  border-color: rgba(var(--pst-color-admonition-hint),0.3);  
+  border-radius: 8px;
+}
