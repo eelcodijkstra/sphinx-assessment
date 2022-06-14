@@ -378,17 +378,15 @@ var assessment_log = function (obj) {
   function shortanswerCheck(evt) {
     console.log('submit shortanswer');
     const item = evt.target.parentElement;
-    var answerlog = [];
-    var correct = false;
     const answer = item.querySelector('textarea');
     console.log('Submit: ' + answer.value);
-    answerlog.push( {answer: answer.value} );
+    const answerlog = {answer: answer.value};
 
     const opgave = item.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'shortanswer',
                     'opgave': opgave,
                     'answerlog': answerlog,
-                    'correct': correct
+                    'correct': null
     });   
   }
 
