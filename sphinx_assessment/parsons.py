@@ -86,11 +86,17 @@ class ParsonsDirective(SphinxDirective):
         pnode.extend([title_node, content_node, sourcelist])
         pnode["parsons-title"] = self.arguments[0]
 
+        pnode["label"] = f'assessment-{self.env.new_serialno()}'        
         return [pnode]
 
 
 def visit_parsonsnode(self, node):
-    self.body.append('<div class="parsons admonition">')
+    self.body.append(
+        '<div class="{}" id="{}">'.format(
+            'parsons assessment admonition',
+            node["label"]
+        )
+    )
 
 
 def depart_parsonsnode(self, node):

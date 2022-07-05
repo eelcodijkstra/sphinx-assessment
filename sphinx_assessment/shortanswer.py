@@ -45,11 +45,17 @@ class ShortAnswerDirective(SphinxDirective):
         )
 
         sanode.extend([title_node, content_node])
+        sanode["label"] = f'assessment-{self.env.new_serialno()}'        
         return [sanode]
 
 
 def visit_shortanswernode(self, node):
-    self.body.append('<div class="shortanswer admonition">')
+    self.body.append(
+        '<div class="{}" id="{}">'.format(
+            'shortanswer assessment admonition',
+            node["label"]
+        )
+    )
 
 
 def depart_shortanswernode(self, node):

@@ -108,11 +108,17 @@ class DragndropDirective(SphinxDirective):
         )
 
         dndnode.extend([title_node, content_node, sourcelist, targetlist])
+        dndnode["label"] = f'assessment-{self.env.new_serialno()}'
         return [dndnode]
 
 
 def visit_dragndropnode(self, node):
-    self.body.append('<div class="dragndrop admonition">')
+    self.body.append(
+        '<div class="{}" id="{}">'.format(
+            'dragndrop assessment admonition',
+            node["label"]
+        )
+    )
 
 
 def depart_dragndropnode(self, node):

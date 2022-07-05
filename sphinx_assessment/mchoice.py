@@ -103,14 +103,17 @@ class MChoiceDirective(SphinxDirective):
 
         mcnode.extend([title_node, content_node, answerlist, feedbacklist])
         mcnode["data-correct"] = self.options["correct"]
-
+        
+        mcnode["label"] = f'assessment-{self.env.new_serialno()}'
         return [mcnode]
 
 
 def visit_mchoicenode(self, node):
     self.body.append(
-        '<form class="mchoice admonition" onsubmit="return false;" data-correct="{}">\n'.format(
-            node["data-correct"]
+        '<form class="{}" onsubmit="return false;" data-correct="{}" id="{}">\n'.format(
+            'mchoice assessment admonition',
+            node["data-correct"],
+            node["label"]
         )
     )
 
