@@ -10,28 +10,33 @@
 }
 
 /*********************************************
-* MChoice *
+* Assessments common *
 *********************************************/
 
-div.mchoice {
+div.assessment {
   border-color: rgba(var(--pst-color-admonition-hint),1);
 /*  background-color: var(--xnote-title-color); */
   background-color: rgba(var(--pst-color-admonition-hint),0.05);
 }
 
-div.mchoice p.admonition-title {
+div.assessment p.admonition-title {
 /*  background-color: var(--xnote-title-color); */
   background-color: rgba(var(--pst-color-admonition-hint),0.1);    
 }
 
-div.mchoice p.admonition-title::before {
+div.assessment p.admonition-title::before {
   content: "\f044";
   color: rgba(var(--pst-color-admonition-hint),1);
 }
 
-div.mchoice #question {
+div.assessment #question {
   margin-bottom: 10px;
 }
+
+
+/*********************************************
+* MChoice *
+*********************************************/
 
 div.mchoice div.buttonspart {
   margin-top: 5px; 
@@ -46,20 +51,6 @@ div.mchoice :is(button.checkbutton, button.resetbutton) {
 /*********************************************
 * Dragndrop *
 *********************************************/
-
-div.dragndrop {
-  border-color: rgba(var(--pst-color-admonition-hint),1);
-  background-color: rgba(var(--pst-color-admonition-hint),0.05);
-}
-
-div.dragndrop p.admonition-title::before {
-  content: "\f044";
-  color: rgba(var(--pst-color-admonition-hint),1);    
-}
-
-div.dragndrop p.admonition-title {
-  background-color: rgba(var(--pst-color-admonition-hint),0.1);
-}
 
 div.dragndrop div.dndcontainer {
     display: flex;
@@ -114,20 +105,6 @@ div.dragndrop button.dndresetbutton {
 * Fillintheblank *
 *********************************************/
 
-div.fillintheblank {
-  border-color: rgba(var(--pst-color-admonition-hint),1);
-  background-color: rgba(var(--pst-color-admonition-hint),0.05);
-}
-
-div.fillintheblank p.admonition-title::before {
-  content: "\f044";
-  color: rgba(var(--pst-color-admonition-hint),1);    
-}
-
-div.fillintheblank p.admonition-title {
-  background-color: rgba(var(--pst-color-admonition-hint),0.1);
-}
-
 div.fillintheblank button.fitbcheckbutton {
   background-color: rgba(var(--pst-color-admonition-hint),0.1);
   border-color: rgba(var(--pst-color-admonition-hint),0.3);  
@@ -137,20 +114,6 @@ div.fillintheblank button.fitbcheckbutton {
 /*********************************************
 * Parsons *
 *********************************************/
-
-div.parsons {
-  border-color: rgba(var(--pst-color-admonition-hint),1);
-  background-color: rgba(var(--pst-color-admonition-hint),0.05);
-}
-
-div.parsons p.admonition-title::before {
-  content: "\f044";
-  color: rgba(var(--pst-color-admonition-hint),1);    
-}
-
-div.parsons p.admonition-title {
-  background-color: rgba(var(--pst-color-admonition-hint),0.1);
-}
 
 .parsons-container {
   display: flex;    
@@ -224,20 +187,6 @@ div.parsons button.parsons-checkbutton {
 /*********************************************
 * Shortanswer *
 *********************************************/
-
-div.shortanswer {
-  border-color: rgba(var(--pst-color-admonition-hint),1);
-  background-color: rgba(var(--pst-color-admonition-hint),0.05);
-}
-
-div.shortanswer p.admonition-title::before {
-  content: "\f044";
-  color: rgba(var(--pst-color-admonition-hint),1);    
-}
-
-div.shortanswer p.admonition-title {
-  background-color: rgba(var(--pst-color-admonition-hint),0.1);
-}
 
 div.shortanswer button.sacheckbutton {
   background-color: rgba(var(--pst-color-admonition-hint),0.1);
