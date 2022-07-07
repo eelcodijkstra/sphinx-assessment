@@ -84,11 +84,13 @@ var assessment_log = function (obj) {
   ** fillintheblank
   */
 
-  function fitbcheck(evt, item) {
-    console.log('check fitb');
+  function fitbcheck(evt) {
+    const mydiv = evt.target.closest('.fillintheblank');
+    console.log('check fitb: ' + mydiv.id);
+      
     var answerlog = [];
     var correct = true;
-    const answers = item.getElementsByClassName('fitbanswer');
+    const answers = mydiv.getElementsByClassName('fitbanswer');
     for (const answer of answers) {
       const type = answer.dataset.type;
       const answer1 = answer.dataset.answer;
@@ -117,10 +119,10 @@ var assessment_log = function (obj) {
       }
       answerlog.push({'answer': answer.value, 'correct': ok});  
     }
-    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'fillintheblank',
                     'opgave': opgave,
-                    'label': item.id,                    
+                    'label': mydiv.id,                    
                     'answerlog': answerlog,
                     'correct': correct
     });      
@@ -131,9 +133,7 @@ var assessment_log = function (obj) {
     const fitbs = document.querySelectorAll('.fillintheblank');
     for (const item of fitbs) {
       const checkbutton = item.querySelector('.fitbcheckbutton');
-      checkbutton.onclick = function(evt) {
-        fitbcheck(evt, item);
-      };
+      checkbutton.onclick = fitbcheck;
     }
   }
 
@@ -162,8 +162,10 @@ var assessment_log = function (obj) {
   }
 
   function checkDnd(ev) {
-    const dnd = ev.target.parentNode;
-    const items = dnd.querySelectorAll('.dndsourceitem');
+    const mydiv = ev.target.closest('.dragndrop');
+    console.log('check dnd: ' + mydiv.id);
+
+    const items = mydiv.querySelectorAll('.dndsourceitem');
     var correct = true;
     for (const item of items) {
       if (
@@ -176,10 +178,10 @@ var assessment_log = function (obj) {
         correct = false;
       }
     }
-    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'dragndrop',
                     'opgave': opgave,
-                    'label': item.id,                    
+                    'label': mydiv.id,                    
                     'correct': correct
     });       
   }
