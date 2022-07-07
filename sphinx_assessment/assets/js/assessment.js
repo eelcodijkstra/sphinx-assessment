@@ -10,16 +10,18 @@ var assessment_log = function (obj) {
   ** mchoice
   */
   function mcHandler(event) {
-    console.log('target: ' + event.target.id);
-    const myform = event.target;
+    const myform = event.target;  
+    const mydiv = myform.closest('.mchoice');
+    console.log('target: ' + mydiv.id);
+
     const correct = myform.dataset.correct;
-    const feedbackline = myform.getElementsByClassName('feedback')[0];
+    const feedbackline = mydiv.getElementsByClassName('feedback')[0];
     if (myform.answer.value == correct) {
       feedbackline.innerHTML = '<i class="fas fa-check"> </i>';
     } else {
       feedbackline.innerHTML = '<i class="fas fa-times"> </i>';
     }
-    const feedbacklist = myform.getElementsByTagName('ul')[0];
+    const feedbacklist = mydiv.getElementsByTagName('ul')[0];
     feedbacklist.hidden = false;
     const feedbacks = feedbacklist.getElementsByTagName('li');
     for (let i = 0; i < feedbacks.length; i++) {
@@ -34,9 +36,10 @@ var assessment_log = function (obj) {
         feedbacks[i].hidden = true;
       }
     }
-    const opgave = myform.querySelector('span.caption-number').innerHTML;  
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'mchoice',
                     'opgave': opgave,
+                    'label': mydiv.id,
                     'answerlog': {
                         'answer': myform.answer.value,
                         'correctanswer': correct
@@ -47,12 +50,13 @@ var assessment_log = function (obj) {
   }
 
   function mcResetHandler(event) {
-    console.log('target: ' + event.target.id);
-    console.log('form: ' + event.target.form.id);
     const myform = event.target.form;
-    const feedbackline = myform.getElementsByClassName('feedback')[0];
+    const mydiv = myform.closest('.mchoice');
+    console.log('target: ' + mydiv.id);
+
+    const feedbackline = mydiv.getElementsByClassName('feedback')[0];
     feedbackline.innerHTML = '';
-    const feedbacklist = myform.getElementsByTagName('ul')[0];
+    const feedbacklist = mydiv.getElementsByTagName('ul')[0];
     feedbacklist.hidden = true;
     const feedbacks = feedbacklist.getElementsByTagName('li');
     for (let i = 0; i < feedbacks.length; i++) {
@@ -116,6 +120,7 @@ var assessment_log = function (obj) {
     const opgave = item.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'fillintheblank',
                     'opgave': opgave,
+                    'label': item.id,                    
                     'answerlog': answerlog,
                     'correct': correct
     });      
@@ -174,6 +179,7 @@ var assessment_log = function (obj) {
     const opgave = item.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'dragndrop',
                     'opgave': opgave,
+                    'label': item.id,                    
                     'correct': correct
     });       
   }
@@ -307,7 +313,7 @@ var assessment_log = function (obj) {
     console.log('Parsons: check');
     var correct = true;
     var answerlog = [];
-    // find surrounding parsons admonition
+    // find enclosing parsons admonition
     const parsons = evt.target.closest('.parsons');
     const targets = parsons.getElementsByClassName('parsons-target');
     console.log('target found? - ' + targets.length);
@@ -337,6 +343,7 @@ var assessment_log = function (obj) {
     const opgave = parsons.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'parsons',
                     'opgave': opgave,
+                    'label': parsons.id,                      
                     'answerlog': answerlog,
                     'correct': correct
     });        
@@ -385,6 +392,7 @@ var assessment_log = function (obj) {
     const opgave = item.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'shortanswer',
                     'opgave': opgave,
+                    'label': item.id,                    
                     'answerlog': answerlog,
                     'correct': null
     });   

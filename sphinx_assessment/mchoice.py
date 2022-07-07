@@ -101,8 +101,8 @@ class MChoiceDirective(SphinxDirective):
         mcnode = mchoicenode(rawsource=self.block_text)
         mcnode.source, mcnode.line = self.state_machine.get_source_and_line(self.lineno)
 
+        answerlist["data-correct"] = self.options["correct"]
         mcnode.extend([title_node, content_node, answerlist, feedbacklist])
-        mcnode["data-correct"] = self.options["correct"]
         
         mcnode["label"] = f'assessment-{self.env.new_serialno()}'
         return [mcnode]
@@ -110,16 +110,15 @@ class MChoiceDirective(SphinxDirective):
 
 def visit_mchoicenode(self, node):
     self.body.append(
-        '<form class="{}" onsubmit="return false;" data-correct="{}" id="{}">\n'.format(
+        '<div class="{}" id="{}">\n'.format(
             'mchoice assessment admonition',
-            node["data-correct"],
             node["label"]
         )
     )
 
 
 def depart_mchoicenode(self, node):
-    self.body.append("</form>\n")
+    self.body.append("</div>\n")
 
 
 def visit_mcquestion(self, node):
@@ -148,15 +147,20 @@ def depart_mcanswer(self, node):
 
 
 def visit_mcanswerlist(self, node):
-    pass
+    self.body.append(
+        '<form onsubmit="return false;" data-correct="{}">\n'.format(
+            node["data-correct"]
+        )
+    )
 
 
 def depart_mcanswerlist(self, node):
     answerlistclose = """
-  <div class="buttonpart">
-    <button type="submit" class="checkbutton"> Check </button>
-    <button type="reset" class="resetbutton"> Reset </button>
-  </div>
+    <div class="buttonpart">
+      <button type="submit" class="checkbutton"> Check </button>
+      <button type="reset" class="resetbutton"> Reset </button>
+    </div>
+  </form>
 """
     self.body.append(answerlistclose)
 
