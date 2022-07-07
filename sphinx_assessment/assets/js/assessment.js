@@ -383,16 +383,17 @@ var assessment_log = function (obj) {
   }
 
   function shortanswerCheck(evt) {
-    console.log('submit shortanswer');
-    const item = evt.target.parentElement;
-    const answer = item.querySelector('textarea');
+    const mydiv = evt.target.closest('.shortanswer');
+    console.log('submit shortanswer: ' + mydiv.id);
+
+    const answer = mydiv.querySelector('textarea');
     console.log('Submit: ' + answer.value);
     const answerlog = {answer: answer.value};
 
-    const opgave = item.querySelector('span.caption-number').innerHTML;  
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
     assessment_log({'type': 'shortanswer',
                     'opgave': opgave,
-                    'label': item.id,                    
+                    'label': mydiv.id,                    
                     'answerlog': answerlog,
                     'correct': null
     });   
