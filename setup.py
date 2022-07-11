@@ -8,5 +8,6 @@ setup(
     author_email='eelco@infvo.nl',
     url='https://github.com/eelcodijkstra/sphinx-assessment',
     packages=find_packages(include=['sphinx_assessment', 'sphinx_assessment.*']),
+    include_package_data=True,
     license="MIT"
 )
