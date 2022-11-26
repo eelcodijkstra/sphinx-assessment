@@ -7,6 +7,7 @@ from .mchoice import setup as mchoice_setup
 from .dragndrop import setup as dragndrop_setup
 from .fillintheblank import setup as fillintheblank_setup
 from .parsons import setup as parsons_setup
+from .shortanswer import setup as shortanswer_setup
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,7 @@ def copy_asset_files(app, exc):
 
 def setup(app):
 
+    logger.info("setup - v.0.1.2")
     app.connect("config-inited", init_numfig)  # event order - 1
     app.connect("build-finished", copy_asset_files)  # event order - 16
 
@@ -48,12 +50,13 @@ def setup(app):
     dragndrop_setup(app)
     fillintheblank_setup(app)
     parsons_setup(app)
+    shortanswer_setup(app)
 
     app.add_css_file("assessment.css")
     app.add_js_file("assessment.js")
 
     return {
-        "version": "0.1",
+        "version": "0.1.2",
         "parallel_read_safe": True,
         "parallel_write_safe": True,
     }

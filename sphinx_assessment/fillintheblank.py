@@ -125,11 +125,17 @@ class FillInTheBlanksDirective(SphinxDirective):
         )
 
         fitbnode.extend([title_node, content_node, feedbacklist])
+        fitbnode["label"] = f'assessment-{self.env.new_serialno()}'        
         return [fitbnode]
 
 
 def visit_fitbnode(self, node):
-    self.body.append('<div class="fillintheblank admonition">')
+    self.body.append(
+        '<div class="{}" id="{}">'.format(
+            'fillintheblank assessment admonition',
+            node["label"]
+        )
+    )
 
 
 def depart_fitbnode(self, node):

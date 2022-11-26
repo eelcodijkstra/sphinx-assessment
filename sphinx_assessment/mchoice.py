@@ -45,6 +45,9 @@ class MChoiceDirective(SphinxDirective):
     def run(self):
         if not ("correct" in self.options):
             raise self.error("multiple choice: 'correct' option missing")
+        correct = self.options["correct"]
+        multiple = ("multiple" in self.options) or len(correct) > 1
+                
 
         # Parse custom subtitle option
         if self.arguments != []:
@@ -95,28 +98,38 @@ class MChoiceDirective(SphinxDirective):
             answer = MCAnswerItem(item.rawsource, *item.children, **item.attributes)
             answer["answer"] = itemnames[itemnr]
             answer["ids"].append("answer-" + itemnames[itemnr])
+            answer["multiple"] = multiple
             answerlist.append(answer)
             itemnr += 1
 
         mcnode = mchoicenode(rawsource=self.block_text)
         mcnode.source, mcnode.line = self.state_machine.get_source_and_line(self.lineno)
 
+        if multiple:
+            correctlist = ""
+            for ch in itemnames:
+                if ch in correct:
+                    correctlist = correctlist + ch
+            correct = correctlist        
+        answerlist["data-correct"] = correct
+        answerlist["data-multiple"] = multiple
         mcnode.extend([title_node, content_node, answerlist, feedbacklist])
-        mcnode["data-correct"] = self.options["correct"]
-
+        
+        mcnode["label"] = f'assessment-{self.env.new_serialno()}'
         return [mcnode]
 
 
 def visit_mchoicenode(self, node):
     self.body.append(
-        '<form class="mchoice admonition" onsubmit="return false;" data-correct="{}">\n'.format(
-            node["data-correct"]
+        '<div class="{}" id="{}">\n'.format(
+            'mchoice assessment admonition',
+            node["label"]
         )
     )
 
 
 def depart_mchoicenode(self, node):
-    self.body.append("</form>\n")
+    self.body.append("</div>\n")
 
 
 def visit_mcquestion(self, node):
@@ -128,12 +141,16 @@ def depart_mcquestion(self, node):
 
 
 def visit_mcanswer(self, node):
+    if node["multiple"]:
+        input_type = "checkbox"
+    else:
+        input_type = "radio"
     answeropen = """
   <div>
     <label>
-      <input type="radio" name="answer" value="{a}"> {a})
+      <input type={t} name="answer" value="{a}"> {a})
 """
-    self.body.append(answeropen.format(a=node["answer"]))
+    self.body.append(answeropen.format(t=input_type, a=node["answer"]))
 
 
 def depart_mcanswer(self, node):
@@ -145,15 +162,21 @@ def depart_mcanswer(self, node):
 
 
 def visit_mcanswerlist(self, node):
-    pass
+    self.body.append(
+        '<form onsubmit="return false;" data-correct="{c}" data-multiple="{m}">\n'.format(
+            m=node["data-multiple"],
+            c=node["data-correct"]
+        )
+    )
 
 
 def depart_mcanswerlist(self, node):
     answerlistclose = """
-  <div class="buttonpart">
-    <button type="submit" class="checkbutton"> Check </button>
-    <button type="reset" class="resetbutton"> Reset </button>
-  </div>
+    <div class="buttonpart">
+      <button type="submit" class="checkbutton"> Check </button>
+      <button type="reset" class="resetbutton"> Reset </button>
+    </div>
+  </form>
 """
     self.body.append(answerlistclose)
 

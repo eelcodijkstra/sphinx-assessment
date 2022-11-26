@@ -1,18 +1,27 @@
+var assessment_log = function (obj) {
+    if (typeof progress_log !== 'undefined') { // check if exists
+        progress_log(obj);
+        assessment_log = progress_log; // to avoid repeated check
+    }      
+};
+
 (function() {
   /*
   ** mchoice
   */
   function mcHandler(event) {
-    console.log('target: ' + event.target.id);
-    const myform = event.target;
+    const myform = event.target;  
+    const mydiv = myform.closest('.mchoice');
+    console.log('target: ' + mydiv.id);
+
     const correct = myform.dataset.correct;
-    const feedbackline = myform.getElementsByClassName('feedback')[0];
+    const feedbackline = mydiv.getElementsByClassName('feedback')[0];
     if (myform.answer.value == correct) {
       feedbackline.innerHTML = '<i class="fas fa-check"> </i>';
     } else {
       feedbackline.innerHTML = '<i class="fas fa-times"> </i>';
     }
-    const feedbacklist = myform.getElementsByTagName('ul')[0];
+    const feedbacklist = mydiv.getElementsByTagName('ul')[0];
     feedbacklist.hidden = false;
     const feedbacks = feedbacklist.getElementsByTagName('li');
     for (let i = 0; i < feedbacks.length; i++) {
@@ -27,16 +36,27 @@
         feedbacks[i].hidden = true;
       }
     }
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'mchoice',
+                    'opgave': opgave,
+                    'label': mydiv.id,
+                    'answerlog': {
+                        'answer': myform.answer.value,
+                        'correctanswer': correct
+                    },
+                    'correct': correct == myform.answer.value
+    });  
     return false; // no further action
   }
 
   function mcResetHandler(event) {
-    console.log('target: ' + event.target.id);
-    console.log('form: ' + event.target.form.id);
     const myform = event.target.form;
-    const feedbackline = myform.getElementsByClassName('feedback')[0];
+    const mydiv = myform.closest('.mchoice');
+    console.log('target: ' + mydiv.id);
+
+    const feedbackline = mydiv.getElementsByClassName('feedback')[0];
     feedbackline.innerHTML = '';
-    const feedbacklist = myform.getElementsByTagName('ul')[0];
+    const feedbacklist = mydiv.getElementsByTagName('ul')[0];
     feedbacklist.hidden = true;
     const feedbacks = feedbacklist.getElementsByTagName('li');
     for (let i = 0; i < feedbacks.length; i++) {
@@ -64,9 +84,13 @@
   ** fillintheblank
   */
 
-  function fitbcheck(evt, item) {
-    console.log('check fitb');
-    const answers = item.getElementsByClassName('fitbanswer');
+  function fitbcheck(evt) {
+    const mydiv = evt.target.closest('.fillintheblank');
+    console.log('check fitb: ' + mydiv.id);
+      
+    var answerlog = [];
+    var correct = true;
+    const answers = mydiv.getElementsByClassName('fitbanswer');
     for (const answer of answers) {
       const type = answer.dataset.type;
       const answer1 = answer.dataset.answer;
@@ -91,8 +115,17 @@
         answer.style.backgroundColor = 'yellowGreen';
       } else {
         answer.style.backgroundColor = 'salmon';
+        correct = false;  
       }
+      answerlog.push({'answer': answer.value, 'correct': ok});  
     }
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'fillintheblank',
+                    'opgave': opgave,
+                    'label': mydiv.id,                    
+                    'answerlog': answerlog,
+                    'correct': correct
+    });      
   }
 
   function findFillintheblanks() {
@@ -100,9 +133,7 @@
     const fitbs = document.querySelectorAll('.fillintheblank');
     for (const item of fitbs) {
       const checkbutton = item.querySelector('.fitbcheckbutton');
-      checkbutton.onclick = function(evt) {
-        fitbcheck(evt, item);
-      };
+      checkbutton.onclick = fitbcheck;
     }
   }
 
@@ -131,8 +162,11 @@
   }
 
   function checkDnd(ev) {
-    const dnd = ev.target.parentNode;
-    const items = dnd.querySelectorAll('.dndsourceitem');
+    const mydiv = ev.target.closest('.dragndrop');
+    console.log('check dnd: ' + mydiv.id);
+
+    const items = mydiv.querySelectorAll('.dndsourceitem');
+    var correct = true;
     for (const item of items) {
       if (
         (item.parentNode.dataset != null) &&
@@ -141,8 +175,15 @@
         item.style.backgroundColor = 'yellowGreen';
       } else {
         item.style.backgroundColor = 'salmon';
+        correct = false;
       }
     }
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'dragndrop',
+                    'opgave': opgave,
+                    'label': mydiv.id,                    
+                    'correct': correct
+    });       
   }
 
   function resetDnd(ev) {
@@ -272,19 +313,28 @@
 
   function parsonsCheckHandler(evt) {
     console.log('Parsons: check');
-    // find surrounding parsons admonition
+    var correct = true;
+    var answerlog = [];
+    // find enclosing parsons admonition
     const parsons = evt.target.closest('.parsons');
     const targets = parsons.getElementsByClassName('parsons-target');
     console.log('target found? - ' + targets.length);
     const target = targets[0];
     for (const item of target.children) {
       console.log('next item');
+
       if (item.classList.contains('parsons-item')) {
+        answerlog.push({
+            'item': item.dataset.value,
+            'order': item.style.gridRowStart,
+            'indent': item.style.gridColumnStart
+        });          
         if ((item.style.gridRowStart == item.dataset.value) &&
           (item.style.gridColumnStart - 1 == item.dataset.indent)) {
           item.style.backgroundColor = 'yellowgreen';
         } else {
           item.style.backgroundColor = 'salmon';
+          correct = false;
         }
       }
     }
@@ -292,6 +342,13 @@
     // check all elements in this target:
     // if parsons-item: check 'value' == item.style.gridRowStart and
     // 'indent' == item.style.gridColumnStart - 1
+    const opgave = parsons.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'parsons',
+                    'opgave': opgave,
+                    'label': parsons.id,                      
+                    'answerlog': answerlog,
+                    'correct': correct
+    });        
   }
 
   function findParsons() {
@@ -314,14 +371,45 @@
       button.onclick = parsonsCheckHandler;
     }
   }
+    
+  /*
+  ** shortanswer
+  */
+  
+  function findShortanswers() {
+    const items = document.getElementsByClassName('shortanswer');
+    for (const item of items) {
+        button = item.querySelector('button');
+        button.onclick = shortanswerCheck;
+    }
+  }
+
+  function shortanswerCheck(evt) {
+    const mydiv = evt.target.closest('.shortanswer');
+    console.log('submit shortanswer: ' + mydiv.id);
+
+    const answer = mydiv.querySelector('textarea');
+    console.log('Submit: ' + answer.value);
+    const answerlog = {answer: answer.value};
+
+    const opgave = mydiv.querySelector('span.caption-number').innerHTML;  
+    assessment_log({'type': 'shortanswer',
+                    'opgave': opgave,
+                    'label': mydiv.id,                    
+                    'answerlog': answerlog,
+                    'correct': null
+    });   
+  }
 
   /*
   ** initialization
-  */
+  */    
+    
   document.addEventListener('DOMContentLoaded', function(event) {
     findFillintheblanks();
     findMchoices();
     findDragndrops();
     findParsons();
+    findShortanswers();
   });
 })();
