@@ -4,7 +4,7 @@ This package contains a Sphinx extension for producing assessment directives: mu
 
 **This is an alpha-version, use at your own risk; interfaces may change**
 
-## Get started
+## Getting started
 
 To get started with *sphinx_assessment*, first install it through pip:
 

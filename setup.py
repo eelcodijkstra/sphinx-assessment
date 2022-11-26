@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sphinx_assessment',
-    version='0.1.1',
+    version='0.1.2',
     description='Assessment questions for Jupyter Book',
     author='Eelco Dijkstra',
     author_email='eelco@infvo.nl',
