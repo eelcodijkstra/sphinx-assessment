@@ -15,8 +15,18 @@ var assessment_log = function (obj) {
     console.log('target: ' + mydiv.id);
 
     const correct = myform.dataset.correct;
+    const multiple = myform.dataset.multiple == "True";
+    let answer = "";  
+    if (multiple) {
+      let checkboxes = myform.querySelectorAll('input[name="answer"]:checked');
+       checkboxes.forEach((checkbox) => {
+          answer += checkbox.value;
+       });
+    } else {
+      answer = myform.answer.value;
+    }
     const feedbackline = mydiv.getElementsByClassName('feedback')[0];
-    if (myform.answer.value == correct) {
+    if (answer == correct) {
       feedbackline.innerHTML = '<i class="fas fa-check"> </i>';
     } else {
       feedbackline.innerHTML = '<i class="fas fa-times"> </i>';
