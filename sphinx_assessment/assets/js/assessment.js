@@ -51,10 +51,10 @@ var assessment_log = function (obj) {
                     'opgave': opgave,
                     'label': mydiv.id,
                     'answerlog': {
-                        'answer': myform.answer.value,
+                        'answer': answer,
                         'correctanswer': correct
                     },
-                    'correct': correct == myform.answer.value
+                    'correct': correct == answer
     });  
     return false; // no further action
   }
