@@ -48,7 +48,6 @@ class MChoiceDirective(SphinxDirective):
         correct = self.options["correct"]
         multiple = ("multiple" in self.options) or len(correct) > 1
                 
-
         # Parse custom subtitle option
         if self.arguments != []:
             title_node = nodes.title(text="")
@@ -87,7 +86,7 @@ class MChoiceDirective(SphinxDirective):
 
             else:
                 feedbackitem = MCFeedbackItem()
-                feedbackitem.append(nodes.Text("no feedback"))
+                feedbackitem.append(nodes.Text("-"))
 
             feedbackitem["data-value"] = itemnames[itemnr]
             feedbacklist.append(feedbackitem)
