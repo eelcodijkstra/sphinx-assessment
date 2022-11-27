@@ -42,7 +42,7 @@ def copy_asset_files(app, exc):
 
 def setup(app):
 
-    logger.info("setup - v.0.1.2")
+    logger.info("setup - v.0.1.4")
     app.connect("config-inited", init_numfig)  # event order - 1
     app.connect("build-finished", copy_asset_files)  # event order - 16
 
@@ -56,7 +56,7 @@ def setup(app):
     app.add_js_file("assessment.js")
 
     return {
-        "version": "0.1.2",
+        "version": "0.1.4",
         "parallel_read_safe": True,
         "parallel_write_safe": True,
     }
